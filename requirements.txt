@@ -1,0 +1,20 @@
+# Core dependencies
+coincurve>=15.0.1,<18.0.0  # Version compatible with bip-utils
+bip-utils>=2.7.0  # Using bip-utils for wallet derivation
+eth-account>=0.8.0  # For Ethereum account handling
+eth-utils>=2.0.0  # Ethereum utilities
+tqdm>=4.65.0
+PyYAML==6.0.1  # Configuration file handling
+
+# Web3 and crypto dependencies
+web3>=6.0.0  # Web3 interface
+cryptography>=41.0.0  # Cryptographic functions
+
+# Progress and UI
+rich>=13.0.0  # Rich terminal output
+click>=8.0.0  # Command line interface
+
+# Mnemonic handling
+mnemonic>=0.20
+hdwallet>=2.2.1
+bip-utils>=2.7.0  # For additional BIP functionality 
