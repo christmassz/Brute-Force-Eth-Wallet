@@ -174,12 +174,12 @@ class WalletRecovery:
         custom_path = wallet_config.get("derivation_path")  # Now optional
         
         # Validate inputs
-        if len(fixed_words) != 15:
-            logger.error(f"Expected 15 fixed words, got {len(fixed_words)}")
+        if len(fixed_words) != 14:
+            logger.error(f"Expected 14 fixed words, got {len(fixed_words)}")
             return None
             
-        if len(permutable_words) != 9:
-            logger.error(f"Expected 9 permutable words, got {len(permutable_words)}")
+        if len(permutable_words) != 10:
+            logger.error(f"Expected 10 permutable words, got {len(permutable_words)}")
             return None
             
         logger.info(f"Target address: {target_address}")

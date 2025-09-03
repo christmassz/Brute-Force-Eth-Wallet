@@ -46,7 +46,17 @@ class WalletDeriver:
                     .Raw()
                     .ToBytes()
                 )
-            
+            elif path == "m/44'/60'/0'":
+                return (
+                    bip44_mst_ctx
+                    .Purpose()
+                    .Coin()
+                    .Account(0)
+                    .PrivateKey()
+                    .Raw()
+                    .ToBytes()
+                )
+                
             # For other paths, parse each component
             path_parts = path.lstrip('m/').split('/')
             current_ctx = bip44_mst_ctx
@@ -115,7 +125,7 @@ class WalletDeriver:
             
     def try_all_derivation_paths(self, mnemonic: str) -> Tuple[Optional[str], Optional[str]]:
         """
-        Try all derivation paths for a given mnemonic
+        Try all derivation paths for a given mnemonic, prioritizing the most common path
         
         Args:
             mnemonic (str): Valid 24-word mnemonic
@@ -123,32 +133,35 @@ class WalletDeriver:
         Returns:
             Tuple[Optional[str], Optional[str]]: (working_path, derived_address) if found, (None, None) otherwise
         """
-        logger.debug(f"Trying {len(self.DERIVATION_PATHS)} derivation paths")
-        
-        # First try the default/custom path
+        # First try the most common path (m/44'/60'/0'/0/0)
+        logger.info("Trying most common derivation path: m/44'/60'/0'/0/0")
         derived_address = self.derive_address(mnemonic, self.DERIVATION_PATHS[0])
         if derived_address:
             if derived_address == self.target_address:
+                logger.info("Found match with most common derivation path!")
                 return self.DERIVATION_PATHS[0], derived_address
-            logger.debug(f"Default path produced address: {derived_address}")
+            logger.debug(f"Most common path produced non-matching address: {derived_address}")
         
         # Then try other paths
+        logger.info("Trying alternative derivation paths...")
         for path in self.DERIVATION_PATHS[1:]:
             try:
+                logger.debug(f"Trying path: {path}")
                 derived_address = self.derive_address(mnemonic, path)
                 if not derived_address:
                     continue
                     
                 logger.debug(f"Testing {derived_address} against target {self.target_address}")
                 if derived_address == self.target_address:
-                    logger.info(f"Found matching address with path {path}")
+                    logger.info(f"Found matching address with alternative path {path}")
                     return path, derived_address
                     
             except Exception as e:
                 logger.debug(f"Error with path {path}: {str(e)}")
                 continue
                 
-        return None, derived_address  # Return the last derived address even if no match
+        logger.info("No matching address found with any derivation path")
+        return None, None
 
     def verify_address(self, derived_address: str) -> bool:
         """

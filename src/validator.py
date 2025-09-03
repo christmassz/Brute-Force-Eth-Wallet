@@ -48,29 +48,29 @@ class MnemonicHandler:
         Combines permuted and fixed words into full mnemonic
         
         Args:
-            permuted_words: First 9 words in current permutation (positions 1-9)
-            fixed_words: Known words for positions 10-24
+            permuted_words: First 10 words in current permutation (positions 1-10)
+            fixed_words: Known words for positions 11-24
             
         Returns:
             str: Complete 24-word mnemonic phrase
         """
-        if len(permuted_words) != 9:
-            raise ValueError(f"Expected 9 permuted words, got {len(permuted_words)}: {permuted_words}")
+        if len(permuted_words) != 10:
+            raise ValueError(f"Expected 10 permuted words, got {len(permuted_words)}: {permuted_words}")
             
-        if len(fixed_words) != 15:
-            raise ValueError(f"Expected 15 fixed words, got {len(fixed_words)}: {fixed_words}")
+        if len(fixed_words) != 14:
+            raise ValueError(f"Expected 14 fixed words, got {len(fixed_words)}: {fixed_words}")
             
         # Clean and normalize all words
         permuted_clean = [str(w).lower().strip().strip('"\'') for w in permuted_words]
         fixed_clean = [str(w).lower().strip().strip('"\'') for w in fixed_words]
         
         # Verify lengths after cleaning
-        if len(permuted_clean) != 9:
+        if len(permuted_clean) != 10:
             raise ValueError(f"Invalid permuted words after cleaning: {permuted_clean}")
-        if len(fixed_clean) != 15:
+        if len(fixed_clean) != 14:
             raise ValueError(f"Invalid fixed words after cleaning: {fixed_clean}")
             
-        # Combine words in correct positions (1-9 permuted, 10-24 fixed)
+        # Combine words in correct positions (1-10 permuted, 11-24 fixed)
         all_words = permuted_clean + fixed_clean
         if len(all_words) != 24:
             raise ValueError(f"Invalid total words: {len(all_words)}")
@@ -80,8 +80,8 @@ class MnemonicHandler:
         
         # Debug output
         logger.debug("Constructed mnemonic details:")
-        logger.debug(f"Permuted words (positions 1-9): {permuted_clean}")
-        logger.debug(f"Fixed words (positions 10-24): {fixed_clean}")
+        logger.debug(f"Permuted words (positions 1-10): {permuted_clean}")
+        logger.debug(f"Fixed words (positions 11-24): {fixed_clean}")
         logger.debug(f"Full mnemonic: {mnemonic}")
         
         return mnemonic
@@ -124,8 +124,8 @@ class MnemonicHandler:
         Validates both word list and checksum for a complete mnemonic
         
         Args:
-            permuted_words: First 9 words in current permutation
-            fixed_words: Known words for positions 10-24
+            permuted_words: First 10 words in current permutation
+            fixed_words: Known words for positions 11-24
             
         Returns:
             bool: True if mnemonic is completely valid

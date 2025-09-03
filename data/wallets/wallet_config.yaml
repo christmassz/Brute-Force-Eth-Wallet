@@ -1,38 +1,29 @@
-# Wallet Recovery Configuration
-
 wallet_1:
-  target_address: "0x28712Bcf646Ffe836288bE6694bC708b24d03A32"
-  fixed_words:  # Positions 10-24 (in order)
-    - "half"
-    - "orphan"
-    - "vocal"
-    - "brave"
-    - "assault"
-    - "sing"
-    - "kangaroo"
-    - "banner"
-    - "echo"
-    - "cram"
-    - "pluck"
-    - "fox"
-    - "awesome"
-    - "color"
-    - "wagon"
-  permutable_words:  # Positions 1-9 (order unknown)
-    - "movie"
-    - "knee"
-    - "client"
-    - "window"
-    - "moon"
-    - "fossil"
-    - "east"
-    - "stage"
-    - "olive"
-  derivation_path: "m/44'/60'/0'/0/0"
-
-# Configuration settings
-settings:
-  chunk_size: 1000  # Number of permutations to process per chunk
-  save_interval: 300  # Save progress every 300 seconds
-  logging_level: "DEBUG"
-  progress_file: "recovery_progress.json" 
+  derivation_path: m/44'/60'/0'
+  fixed_words:
+  - bronze
+  - stick
+  - endless
+  - erase
+  - skin
+  - army
+  - sun
+  - clinic
+  - giant
+  - unfold
+  - use
+  - student
+  - cluster
+  - find
+  permutable_words:
+  - century
+  - squeeze
+  - silly
+  - clinic
+  - swallow
+  - tool
+  - know
+  - walk
+  - faint
+  - scrub
+  target_address: '0xf8a820303c2edcaa453c3cfd88fa77ddff33a3a3'
