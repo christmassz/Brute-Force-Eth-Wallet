@@ -3,6 +3,7 @@ Mnemonic validation and handling module.
 """
 from typing import List
 import logging
+import importlib.resources
 from bip_utils import Bip39SeedGenerator
 import binascii
 
@@ -13,7 +14,7 @@ class MnemonicHandler:
     
     def __init__(self):
         # Load wordlist from a known good source
-        with open("/usr/local/Caskroom/miniconda/base/lib/python3.12/site-packages/bip_utils/bip/bip39/wordlist/english.txt") as f:
+        with importlib.resources.open_text("bip_utils.bip.bip39.wordlist", "english.txt") as f:
             self.wordlist = set(word.strip() for word in f)
         logger.debug(f"Initialized with {len(self.wordlist)} BIP-39 words")
         
