@@ -1,0 +1,29 @@
+wallet_1:
+  derivation_path: m/44'/60'/0'
+  # List of 24 words where the 5th word (index 4) is unknown and left blank.
+  known_words:
+    - oil
+    - dizzy
+    - bag
+    - video
+    - ""  # Unknown word #5
+    - ask
+    - salmon
+    - afraid
+    - winter
+    - long
+    - inch
+    - burger
+    - always
+    - ask
+    - sting
+    - merry
+    - ivory
+    - armed
+    - thumb
+    - render
+    - twelve
+    - cheap
+    - omit
+    - river
+  target_address: '0x01f3f0c6a402925a4b6332ccb5e00937bbec0790'

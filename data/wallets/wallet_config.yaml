@@ -1,29 +1,29 @@
 wallet_1:
   derivation_path: m/44'/60'/0'
   fixed_words:
-  - bronze
-  - stick
-  - endless
-  - erase
-  - skin
-  - army
-  - sun
-  - clinic
-  - giant
-  - unfold
-  - use
-  - student
-  - cluster
-  - find
+  - inch
+  - burger
+  - always
+  - ask
+  - sting
+  - merry
+  - ivory
+  - armed
+  - thumb
+  - render
+  - twelve
+  - cheap
+  - omit
+  - river
   permutable_words:
-  - century
-  - squeeze
-  - silly
-  - clinic
-  - swallow
-  - tool
-  - know
-  - walk
-  - faint
-  - scrub
-  target_address: '0xf8a820303c2edcaa453c3cfd88fa77ddff33a3a3'
+  - oil
+  - dizzy
+  - bag
+  - video
+  - trend
+  - ask
+  - salmon
+  - afraid
+  - winter
+  - long
+  target_address: '0x01f3f0c6a402925a4b6332ccb5e00937bbec0790'
