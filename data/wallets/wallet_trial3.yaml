@@ -8,7 +8,7 @@ settings:
 
 wallet_trial3:
   # Replace with the checksum-verified target address (lower-case)
-  target_address: "0xYOUR_TARGET_ADDRESS_HERE"
+  target_address: "0x"
 
   # Words 10-24 (14 words) are known and already in correct order.
   # ENSURE these are all valid BIP-39 English words.
