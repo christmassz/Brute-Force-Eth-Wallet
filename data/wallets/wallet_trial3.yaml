@@ -1,0 +1,77 @@
+# Wallet recovery configuration for Trial 3
+# Fill in the actual values as needed.
+
+settings:
+  # Optional performance tuning
+  chunk_size: 1000           # Number of permutations to process per batch
+  logging_level: INFO        # DEBUG for verbose output
+
+wallet_trial3:
+  # Replace with the checksum-verified target address (lower-case)
+  target_address: "0xYOUR_TARGET_ADDRESS_HERE"
+
+  # Words 10-24 (14 words) are known and already in correct order.
+  # ENSURE these are all valid BIP-39 English words.
+  fixed_words:
+    - "word10"
+    - "word11"
+    - "word12"
+    - "word13"
+    - "word14"
+    - "word15"
+    - "word16"
+    - "word17"
+    - "word18"
+    - "word19"
+    - "word20"
+    - "word21"
+    - "word22"
+    - "word23"
+    - "word24"
+
+  # Words 1-9: One of these is wrong.  Leave the wrong position as an empty string "".
+  # Example below assumes the 2nd word is the unknown / wrong one – adjust as needed.
+  scrambled_words:
+    - "word1"
+    - ""        # <-- blank slot for the incorrect word
+    - "word3"
+    - "word4"
+    - "word5"
+    - "word6"
+    - "word7"
+    - "word8"
+    - "word9"
+
+  # Pool of 30 candidate words to test in the blank slot.
+  # Order does NOT matter.  Ensure every word is a valid BIP-39 word.
+  replacement_pool:
+    - "alter"
+    - "later"
+    - "elder"
+    - "sister"
+    - "slate"
+    - "sleet"
+    - "slight"
+    - "slot"
+    - "salt"
+    - "solder"
+    - "slave"
+    - "slide"
+    - "slim"
+    - "slip"
+    - "slow"
+    - "slam"
+    - "slap"
+    - "slash"
+    - "sleep"
+    - "slack"
+    - "slab"
+    - "slang"
+    - "slit"
+    - "slump"
+    - "alert"
+    - "after"
+    - "outer"
+    - "altar"
+    - "water"
+    - "enter"

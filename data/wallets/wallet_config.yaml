@@ -1,29 +1,29 @@
 wallet_1:
   derivation_path: m/44'/60'/0'
   fixed_words:
-  - inch
-  - burger
-  - always
-  - ask
-  - sting
-  - merry
-  - ivory
-  - armed
-  - thumb
-  - render
-  - twelve
-  - cheap
-  - omit
-  - river
+  - glow
+  - there
+  - hybrid
+  - ozone
+  - suggest
+  - pet
+  - fancy
+  - field
+  - wet
+  - once
+  - innocent
+  - giant
+  - thank
+  - cost
   permutable_words:
-  - oil
-  - dizzy
-  - bag
-  - video
-  - trend
-  - ask
-  - salmon
-  - afraid
-  - winter
-  - long
-  target_address: '0x01f3f0c6a402925a4b6332ccb5e00937bbec0790'
+  - height
+  - virus
+  - predict
+  - unlock
+  - tattoo
+  - dream
+  - armor
+  - leisure
+  - grant
+  - potato
+  target_address: '0x7760fd937ee3f4df2ec7b404dc89a6c6e418db5e'
