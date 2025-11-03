@@ -11,29 +11,27 @@ logger = logging.getLogger(__name__)
 class WalletDeriver:
     """Handles Ethereum wallet derivation from mnemonics"""
     
-    # Common Ethereum derivation paths
     DERIVATION_PATHS = [
-        "m/44'/60'/0'/0/0",     # Most common (MetaMask, MEW, etc)
-        "m/44'/60'/0'",         # Alternative
-        "m/44'/60'/0'/0",       # Alternative
-        "m/44'/60'/0/0",        # Alternative without hardened derivation
-        "m/44'/60'/0/0/0",      # Alternative without hardened derivation
-        "m/44'/60'/0",          # Base path
-        "m/44'/60'",            # Minimum path
-        "m/0'/0'/0'",           # Legacy
-        "m/0/0/0",              # Legacy without hardening
+        "m/44'/60'/0'/0/0",
+        "m/44'/60'/0'",
+        "m/44'/60'/0'/0",
+        "m/44'/60'/0/0",
+        "m/44'/60'/0/0/0",
+        "m/44'/60'/0",
+        "m/44'/60'",
+        "m/0'/0'/0'",
+        "m/0/0/0",
     ]
     
     def __init__(self, target_address: str, custom_path: Optional[str] = None):
         self.target_address = target_address.lower()
         if custom_path and custom_path not in self.DERIVATION_PATHS:
             logger.info(f"Adding custom derivation path: {custom_path}")
-            self.DERIVATION_PATHS.insert(0, custom_path)  # Add custom path at the beginning
+            self.DERIVATION_PATHS.insert(0, custom_path)
             
     def _derive_key_from_path(self, bip44_mst_ctx: Bip44, path: str) -> Optional[bytes]:
         """Helper to derive private key from path"""
         try:
-            # For simple paths, use direct derivation
             if path == "m/44'/60'/0'/0/0":
                 return (
                     bip44_mst_ctx
@@ -57,7 +55,6 @@ class WalletDeriver:
                     .ToBytes()
                 )
                 
-            # For other paths, parse each component
             path_parts = path.lstrip('m/').split('/')
             current_ctx = bip44_mst_ctx
             
@@ -69,7 +66,7 @@ class WalletDeriver:
                     current_ctx = current_ctx.Purpose()
                 elif part.startswith("60"):
                     current_ctx = current_ctx.Coin()
-                elif len(current_ctx.PrivateKey().Raw().ToBytes()) > 0:  # Check if we can already get a key
+                elif len(current_ctx.PrivateKey().Raw().ToBytes()) > 0:
                     break
                 else:
                     if hardened:
@@ -98,22 +95,18 @@ class WalletDeriver:
             str: Derived Ethereum address
         """
         try:
-            # Generate seed from mnemonic
             seed_bytes = Bip39SeedGenerator(mnemonic).Generate()
             
-            # Create BIP44 wallet
             bip44_mst_ctx = Bip44.FromSeed(seed_bytes, Bip44Coins.ETHEREUM)
             
             if path is None:
                 path = self.DERIVATION_PATHS[0]
 
-            # Get private key based on path
             private_key_bytes = self._derive_key_from_path(bip44_mst_ctx, path)
             if not private_key_bytes:
                 logger.debug(f"Could not derive private key for path: {path}")
                 return ""
                 
-            # Generate Ethereum address
             account = Account.from_key(private_key_bytes)
             derived = account.address.lower()
             logger.debug(f"Derived address {derived} using path {path}")
@@ -133,7 +126,6 @@ class WalletDeriver:
         Returns:
             Tuple[Optional[str], Optional[str]]: (working_path, derived_address) if found, (None, None) otherwise
         """
-        # First try the most common path (m/44'/60'/0'/0/0)
         logger.info("Trying most common derivation path: m/44'/60'/0'/0/0")
         derived_address = self.derive_address(mnemonic, self.DERIVATION_PATHS[0])
         if derived_address:
@@ -142,7 +134,6 @@ class WalletDeriver:
                 return self.DERIVATION_PATHS[0], derived_address
             logger.debug(f"Most common path produced non-matching address: {derived_address}")
         
-        # Then try other paths
         logger.info("Trying alternative derivation paths...")
         for path in self.DERIVATION_PATHS[1:]:
             try:

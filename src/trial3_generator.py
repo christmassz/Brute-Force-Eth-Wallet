@@ -32,16 +32,12 @@ def generate_trial3_word_sets(scrambled_words: List[str], replacement_pool: List
     if blank_count != 1:
         raise ValueError("scrambled_words must contain exactly one blank token")
 
-    # Precompute the eight known words (order will be permuted later)
     base_words = [w for w in scrambled_words if w != BLANK_TOKEN]
     if len(base_words) != 8:
         raise ValueError("Expected 8 known scrambled words after removing blank")
 
-    # Iterate over each replacement candidate
     for candidate in replacement_pool:
         candidate = candidate.lower().strip()
-        # Build full 9-word list
         words_9 = base_words + [candidate]
-        # Generate all 9! permutations lazily
         for perm in itertools.permutations(words_9):
             yield list(perm)

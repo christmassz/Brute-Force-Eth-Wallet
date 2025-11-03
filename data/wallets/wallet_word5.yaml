@@ -1,12 +1,11 @@
 wallet_1:
   derivation_path: m/44'/60'/0'
-  # List of 24 words where the 5th word (index 4) is unknown and left blank.
   known_words:
     - oil
     - dizzy
     - bag
     - video
-    - ""  # Unknown word #5
+    - ""
     - ask
     - salmon
     - afraid

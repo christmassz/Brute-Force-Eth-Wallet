@@ -45,16 +45,13 @@ class Trial3Recovery:
         self.wallet = self.config[wallet_id]
         self.settings = self.config.get("settings", {})
 
-        # Validate lists
         self.fixed_words: List[str] = self.wallet["fixed_words"]
         self.scrambled_words: List[str] = self.wallet["scrambled_words"]
         self.replacement_pool: List[str] = self.wallet["replacement_pool"]
         self.target_address: str = self.wallet["target_address"].lower().strip()
         self.custom_path: Optional[str] = self.wallet.get("derivation_path")
 
-        if len(self.fixed_words) != 15:  # words10–24 inclusive is 15?
-            # actually 10-24 is 15 positions (inclusive). earlier doc said 14 because counting 11-24.
-            # adjust validation to 15.
+        if len(self.fixed_words) != 15:
             raise ValueError(f"fixed_words must have 15 words (positions 10-24), got {len(self.fixed_words)}")
         if len(self.scrambled_words) != 9:
             raise ValueError("scrambled_words must have 9 entries (one blank)")
@@ -63,16 +60,13 @@ class Trial3Recovery:
         if len(self.replacement_pool) != 30:
             raise ValueError("replacement_pool must have 30 candidate words")
 
-        # Normalise word casing/whitespace
         self.fixed_words = [w.lower().strip() for w in self.fixed_words]
         self.scrambled_words = [w.lower().strip() for w in self.scrambled_words]
         self.replacement_pool = [w.lower().strip() for w in self.replacement_pool]
 
-        # Handlers
         self.mnemonic_handler = MnemonicHandler()
         self.wallet_deriver = WalletDeriver(self.target_address, self.custom_path)
 
-        # Output setup
         os.makedirs("output", exist_ok=True)
         self.mnemonic_file = open("output/1_mnemonic.csv", "w", newline="")
         self.mnemonic_writer = csv.writer(self.mnemonic_file)
@@ -82,7 +76,6 @@ class Trial3Recovery:
         self.derivation_writer.writerow(["mnemonic", "derived_address"])
 
     def recover(self) -> Optional[Tuple[str, str]]:
-        # Pre-compute total permutations for progress bar
         total_perms = 30 * math.factorial(9)
         logger.info(f"Processing up to {total_perms:,} permutations …")
 
@@ -94,7 +87,6 @@ class Trial3Recovery:
             self.mnemonic_writer.writerow([mnemonic, is_valid])
             if not is_valid:
                 continue
-            # Derive address
             working_path, derived_addr = self.wallet_deriver.try_all_derivation_paths(mnemonic)
             if working_path:
                 logger.info("Success! Found matching mnemonic.")
@@ -106,7 +98,7 @@ class Trial3Recovery:
         try:
             self.mnemonic_file.close()
             self.derivation_file.close()
-        except:  # noqa
+        except:
             pass
 
 def main():

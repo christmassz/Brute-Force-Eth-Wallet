@@ -11,7 +11,7 @@ in the main application.  If the derived address matches the configured
 `target_address`, we output the working mnemonic and stop.
 
 Usage:
-    python test2.py  # runs against default YAML config path
+    python test2.py
 
 Exit status:
     0 – matching mnemonic found
@@ -29,7 +29,6 @@ import yaml
 from src.validator import MnemonicHandler
 from src.wallet import WalletDeriver
 
-# Configure basic logging – can be overridden by parent application
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -42,7 +41,6 @@ def load_config(config_path: Path):
     try:
         with config_path.open("r", encoding="utf-8") as f:
             data = yaml.safe_load(f)
-        # We currently support a single wallet entry – extend as needed.
         wallet_data = next(iter(data.values()))
         known_words = wallet_data["known_words"]
         if len(known_words) != 24:
@@ -55,7 +53,6 @@ def load_config(config_path: Path):
         sys.exit(1)
 
 def main():
-    # Default config file lives next to data folder
     config_path = Path(__file__).parent / "data/wallets/wallet_word5.yaml"
     if not config_path.exists():
         logger.error("Config file %s not found", config_path)
@@ -63,10 +60,8 @@ def main():
 
     known_words, target_address, derivation_path = load_config(config_path)
 
-    # In this scenario we know the 5th word (index 4) is the unknown, so enforce it
     blank_index = 4
 
-    # Split into the two parts expected by MnemonicHandler
     fixed_words = known_words[10:]
 
     validator = MnemonicHandler()
@@ -75,20 +70,17 @@ def main():
     logger.info("Starting brute-force over %d candidate words for position %d", len(validator.wordlist), blank_index + 1)
 
     for candidate in validator.wordlist:
-        permuted = known_words[:10]  # copy first 10
-        permuted[blank_index] = candidate  # substitute candidate
+        permuted = known_words[:10]
+        permuted[blank_index] = candidate
 
-        # Fast path: validate words quickly before checksum to avoid heavy ops
         if not validator.validate_word_list(permuted + fixed_words):
-            continue  # Should not happen – candidate is valid but precaution
+            continue
 
-        # Validate full mnemonic (checksum etc.)
         if not validator.validate_complete_mnemonic(permuted, fixed_words):
             continue
 
         mnemonic = " ".join(permuted + fixed_words)
 
-        # First, try the specific derivation path if provided
         if derivation_path:
             derived_specific = wallet.derive_address(mnemonic, derivation_path)
             if derived_specific and derived_specific.lower() == target_address:
@@ -100,7 +92,6 @@ def main():
                 print(mnemonic)
                 sys.exit(0)
 
-        # Otherwise (or if no match), exhaustively try all common paths
         path, derived_address = wallet.try_all_derivation_paths(mnemonic)
         if derived_address and derived_address.lower() == target_address:
             logger.info("FOUND MATCHING MNEMONIC!\nMnemonic: %s\nDerivation Path: %s", mnemonic, path)
